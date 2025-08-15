@@ -86,7 +86,7 @@ Configuration file permissions in numeric format. Read `chmod(1)` manual for det
 Default is '0600'.
 
 ### error()
-Takes no arguments. Returns `true` if **Config::Writer** object is defined and `error` flag is not set and `false` otherwise.
+Takes no arguments. Returns `false` if **Config::Writer** object is defined and `error` flag is not set and `true` otherwise.
 ### say(STRING)
 Is equivalent to `print()` method except that `$/` is added to the end of the STRING.
 ### print(STRING)
