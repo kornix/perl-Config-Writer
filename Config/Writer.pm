@@ -104,14 +104,14 @@ sub new :prototype($$$) ($class, $filename, $options = {}) {
 Create new B<Config::Writer> object as follows:
 
     my $fh = Config::Writer->new('file.conf', {
-	'format'        => 'BIRD',
+	    'format'        => 'BIRD',
         'workdir'       => '/path/to/workdir',
         'retain'        => 3,
-	'overwrite'     => 1,
+	    'overwrite'     => 1,
         'extension'     => '-%+4Y-%m-%d',
-	'owner'         => 'bird',
-	'group'         => 'bird',
-	'permissions'   => 0640
+	    'owner'         => 'bird',
+	    'group'         => 'bird',
+	    'permissions'   => 0640
     });
 
 Configuration file to be created or replaced name can contain either absolute or
@@ -244,8 +244,8 @@ sub error :prototype($) ($self = undef) {
 
 =item B<error()>
 
-Takes no arguments. Returns `true` if B<Config::Writer> object is
-defined and `error` flag is not set and `false` otherwise.
+Takes no arguments. Returns `false` if B<Config::Writer> object is
+defined and `error` flag is not set and `true` otherwise.
 
 =back
 
