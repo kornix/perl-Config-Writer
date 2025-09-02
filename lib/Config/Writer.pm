@@ -53,7 +53,7 @@ don't think it will be a problem.
         'retain' => 4
     });
     die "can not open file for writing" if $fh->error;
-    $fh->printf('# Configuration file created with %s', $0);
+    $fh->sayf('# Configuration file created with %s', $0);
     $fh->close;
 
 =cut #}}}
@@ -83,7 +83,7 @@ BEGIN {
     $Data::Dumper::Sortkeys = 1;
 }
 
-our $VERSION = version->declare('v0.0.1');
+our $VERSION = version->declare('v0.0.2');
 our $ERROR = boolean::false;
 
 =pod
@@ -104,14 +104,14 @@ sub new :prototype($$$) ($class, $filename, $options = {}) {
 Create new B<Config::Writer> object as follows:
 
     my $fh = Config::Writer->new('file.conf', {
-	    'format'        => 'BIRD',
+	'format'        => 'BIRD',
         'workdir'       => '/path/to/workdir',
         'retain'        => 3,
-	    'overwrite'     => 1,
+	'overwrite'     => 1,
         'extension'     => '-%+4Y-%m-%d',
-	    'owner'         => 'bird',
-	    'group'         => 'bird',
-	    'permissions'   => 0640
+	'owner'         => 'bird',
+	'group'         => 'bird',
+	'permissions'   => 0640
     });
 
 Configuration file to be created or replaced name can contain either absolute or
@@ -251,12 +251,13 @@ defined and `error` flag is not set and `true` otherwise.
 
 =cut #}}}
 
-    return boolean::false if (defined $self and isFalse $self->{'error'});
-    return boolean::true;
+    return (defined $self and isFalse $self->{'error'})
+        ? boolean::false
+        : boolean::true;
 
 } #}}}
 
-sub say :prototype($$@) ($self, $string) {
+sub say :prototype($$) ($self, $string) {
     #{{{
 
 =pod #{{{ say() method description
@@ -275,7 +276,26 @@ Is equivalent to B<print()> method except that $/ is added to the end of the lin
 
 } #}}}
 
-sub print :prototype($$@) ($self, $string) {
+sub sayf :prototype($$@) ($self, $format, @list) {
+    #{{{
+
+=pod #{{{ sayf() method description
+
+=over 4
+
+=item B<sayf(STRING, ARRAY)>
+
+Is equivalent to B<printf()> method except that $/ is added to the end of the format line.
+
+=back
+
+=cut #}}}
+
+    $self->printf($format . $/, @list);
+
+} #}}}
+
+sub print :prototype($$) ($self, $string) {
     #{{{
 
 =pod #{{{ print() method description
@@ -391,6 +411,10 @@ Volodymyr Pidgornyi, vpE<lt>atE<gt>dtel-ix.net;
 =head1 B<CHANGELOG>
 
 =over 4
+
+=item B<v0.0.2>
+
+B<sayf()> metrod added.
 
 =item B<v0.0.1>
 
