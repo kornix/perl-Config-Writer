@@ -89,6 +89,8 @@ Default is '0600'.
 Takes no arguments. Returns `false` if **Config::Writer** object is defined and `error` flag is not set and `true` otherwise.
 ### say(STRING)
 Is equivalent to `print()` method except that `$/` is added to the end of the STRING.
+### sayf(STRING, ARRAY)
+Is equivalent to `printf()` method except that `$/` is added to the end of the formatted STRING.
 ### print(STRING)
 Prints STRING to temporary file as is.
 ### printf(STRING, ARRAY)
@@ -105,6 +107,7 @@ If any errors occurs, `error` flag is set.
 ## AUTHORS
 * Volodymyr Pidgornyi
 ## CHANGELOG
-* **v0.0.1** - Fri Aug 15, 2025 - initial release, since basic features seems to work as intended.
+* **v0.0.2** - Tue Sep  2, 2025 - `sayf()` method added.
+* **v0.0.1** - Mon Aug 15, 2025 - initial release, since basic features seems to work as intended.
 ## TODO
 * Implement helpers for a different configuration files formats.
