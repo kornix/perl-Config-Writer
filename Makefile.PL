@@ -10,6 +10,7 @@ WriteMakefile(
     AUTHOR              => 'Volodymyr Pidgornyi <vp@dtel-ix.net>',
     VERSION_FROM        => 'lib/Config/Writer.pm',
     ABSTRACT_FROM       => 'lib/Config/Writer.pm',
+    # ABSTRACT            => '',
     META_MERGE => {
         'meta-spec' => { version => 2 },
          resources => {
