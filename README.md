@@ -107,6 +107,7 @@ If any errors occurs, `error` flag is set.
 ## AUTHORS
 * Volodymyr Pidgornyi
 ## CHANGELOG
+* **v0.0.3** - Thu Sep 18, 2025 - PAUSE compatibility issues fixed.
 * **v0.0.2** - Tue Sep  2, 2025 - `sayf()` method added.
 * **v0.0.1** - Mon Aug 15, 2025 - initial release, since basic features seems to work as intended.
 ## TODO

@@ -47,10 +47,10 @@ don't think it will be a problem.
 =head1 B<SYNOPSIS>
 
     my $fh = Config::Writer->new('file.conf', {
-        'workdir' => '/usr/local/etc',
-        'owner' => 'nobody',
+        'workdir'     => '/usr/local/etc',
+        'owner'       => 'nobody',
         'permissions' => 0640,
-        'retain' => 4
+        'retain'      => 4
     });
     die "can not open file for writing" if $fh->error;
     $fh->sayf('# Configuration file created with %s', $0);
@@ -83,7 +83,7 @@ BEGIN {
     $Data::Dumper::Sortkeys = 1;
 }
 
-our $VERSION = version->declare('v0.0.2');
+our $VERSION = version->declare('v0.0.3')->stringify;
 our $ERROR = boolean::false;
 
 =pod
@@ -125,9 +125,19 @@ temporary file is renamed in place of the original configuration file.
 
 =over 4
 
+=item B<FILENAME>
+
+Configuration file to be created or replaced name. Can contain either absolute or
+relative path part. Path part handling is described in B<workdir> option description below.
+
+New temporary file will be created on success and all write operations will be performed
+on this temporary file. On B<close()> method invocation existing configuration file can
+be moved to a backup file (see descrition of B<overwrite> option below) and temporary file
+is renamed in place of the original configuration file.
+
 =item B<format> = STRING
 
-Configuration file format. Currently only 'BIRD' is supported.
+Configuration file format. Currently unused.
 
 =item B<workdir> = STRING
 
@@ -144,12 +154,17 @@ is returned and error flag is set!
 
 =item B<retain> = INTEGER
 
-Quantity of configuration file backups to retain. Default is do not retain any.
+Quantity of configuration file backups to retain. Default is 0 - do not retain any.
 
 =item B<overwrite> = BOOLEAN
 
 Existing backup file will be either overwritten if the flag is set to true
-(overwrite = 1) or stayed untouched (overwrite = 0). Default is 0.
+(overwrite = 1) or stayed untouched (overwrite = 0). E. g. if you choose to
+store single backup per day, you'll get either the latest configuration version
+before it being updated, or the configuration you've got at the beginning of the
+day.
+
+Default is 0.
 
 =item B<extension> = STRING
 
@@ -157,11 +172,14 @@ Configuration file backup extension format as described in POSIX strftime functi
 documentation. The new extension will replace original one, so the backup files
 should not be loaded even in case wildcards (e. g. 'B<*.conf>') are used to include
 configuration from a several files. Existing backup files will either stay untouched
-or overwritten depending on B<overwrite> flag value. Default is '-%Y-%m-%d'.
+or overwritten depending on B<overwrite> flag value.
+
+Default is '-%Y-%m-%d'.
 
 =item B<owner> = STRING
 
 Configuration file owner name. If file owner can not be changed, error flag is set.
+
 Defaults to process EUID.
 
 =item B<group> = STRING
@@ -172,6 +190,8 @@ Configuration file group name. If not provided, process EGID is used.
 
 Configuration file permissions in numeric format. Read B<chmod(1)> manual for
 details.
+
+Default is 0600.
 
 =back
 
@@ -411,6 +431,10 @@ Volodymyr Pidgornyi, vpE<lt>atE<gt>dtel-ix.net;
 =head1 B<CHANGELOG>
 
 =over 4
+
+=item B<v0.0.3>
+
+PAUSE compatibility issues fixed.
 
 =item B<v0.0.2>
 

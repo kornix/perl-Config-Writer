@@ -1,5 +1,5 @@
 Name:           perl-Config-Writer
-Version:        0.0.2
+Version:        0.0.3
 Release:        1%{?dist}
 Summary:        Config::Writer - a module to write configuration files in an easy and safe way
 License:        Distributable, see LICENSE
@@ -48,6 +48,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man3/Config*
 
 %changelog
+* Thu Sep 18 2025 Volodymyr Pidgornyi <vp@dtel-ix.net> 0.0.3-1
+- PAUSE compatibility issues fixed.
+
 * Tue Sep  2 2025 Volodymyr Pidgornyi <vp@dtel-ix.net> 0.0.2-1
 - sayf() method added.
 

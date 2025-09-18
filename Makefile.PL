@@ -3,14 +3,14 @@ use warnings;
 use ExtUtils::MakeMaker;
 
 my $makemakerversion = $ExtUtils::MakeMaker::VERSION;
-$makemakerversion =~s/_//g;
+$makemakerversion =~ s/_//g;
 
 WriteMakefile(
     NAME                => 'Config::Writer',
     AUTHOR              => 'Volodymyr Pidgornyi <vp@dtel-ix.net>',
     VERSION_FROM        => 'lib/Config/Writer.pm',
-    ABSTRACT_FROM       => 'lib/Config/Writer.pm',
-    # ABSTRACT            => '',
+    # ABSTRACT_FROM       => 'lib/Config/Writer.pm',
+    ABSTRACT            => 'module to write configuration files in an easy and safe way',
     META_MERGE => {
         'meta-spec' => { version => 2 },
          resources => {
