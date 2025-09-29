@@ -1,114 +1,190 @@
-# perl-Config::Writer
-## NAME
-**Config::Writer** - perl module to write configuration files in an easy and safe way.
-## DESCRIPTION
+# NAME
+
+**Config::Writer** - a module to write configuration files
+in an easy and safe way.
+
+# DESCRIPTION
+
 This module is intended to perform the next operations:
 
-* safe temporary configuration file creation, ownership and access mode setting;
-* creation of backup file(-s) of the target configuration file;
-* automatic cleanup of outdated or surplus backup files.
+- safe temporary configuration file creation, ownership and
+access mode setting;
+- creation of backup file(-s) of the target configuration file;
+- automatic cleanup of outdated or surplus backup files.
 
-Now you are able to restore configuration file even if you forgot to create a backup file before editing it!
-## CAVEATS
-* This module is written using `signatures` feature. As for me, it makes code clearer. However, it requires perl 5.10+. All more or less modern operating systems distributions has much more newer perl included, so don't think it will be a problem.
-## SYNOPSIS
-    use Config::Writer;
-    
+Now you are able to restore configuration file even if you
+forgot to create a backup file before editing it!
+
+# CAVEATS
+
+- This module is written using \`signatures\` feature. As for me,
+it makes code clearer. However, it requires perl 5.10+. All
+more or less modern OSes has much more newer perl included, so
+don't think it will be a problem.
+
+# **SYNOPSIS**
+
     my $fh = Config::Writer->new('file.conf', {
-            'workdir' => '/usr/local/etc',
-            'owner' => 'nobody',
-            'permissions' => 0640,
-            'retain' => 4
+        'workdir'     => '/usr/local/etc',
+        'owner'       => 'nobody',
+        'permissions' => 0640,
+        'retain'      => 4
     });
     die "can not open file for writing" if $fh->error;
-    $fh->printf('# Configuration file created with %s', $0);
+    $fh->sayf('# Configuration file created with %s', $0);
     $fh->close;
-## METHODS
-### new(FILENAME, { OPTIONS })
-Creates new **Config::Writer** object.
 
-* #### FILENAME
+# **METHODS**
 
-Configuration file to be created or replaced name can contain either absolute or relative path part. Path part handling is described in `workdir` option description below.
+- **new(FILENAME, { OPTIONS })**
 
-New temporary file will be created on success and all write operations will be performed on this temporary file. On `close()` method invocation existing configuration file can be moved to a backup file (see descrition of `overwrite` option below) and temporary file is renamed in place of the original configuration file.
+    Create new **Config::Writer** object as follows:
 
-* #### OPTIONS
+        my $fh = Config::Writer->new('file.conf', {
+            'workdir'       => '/path/to/workdir',
+            'retain'        => 3,
+            'overwrite'     => 1,
+            'extension'     => '-%+4Y-%m-%d',
+            'owner'         => 'bird',
+            'group'         => 'bird',
+            'permissions'   => 0640
+        });
 
-- **format = STRING**
+    Configuration file to be created or replaced name can contain either absolute or
+    relative path part. Path part handling is described in **workdir** option description
+    below.
 
-Configuration file format. Currently unused.
+    New temporary file will be created on success and all write operations will be
+    performed on this temporary file. On \`close\` method invocation existing configuration
+    file can be moved to a backup file (see descrition of **overwrite** option below) and
+    temporary file is renamed in place of the original configuration file.
 
-- **workdir = STRING**
+    - **FILENAME**
 
-If filename contains absolute path, `workdir` is set to a `dirname(1)` implicitly regardless of whether `workdir` option is set or not explicitly.
+        Configuration file to be created or replaced name. Can contain either absolute or
+        relative path part. Path part handling is described in **workdir** option description below.
 
-If `workdir` is not set, work directory defaults to `getcwd(3)`.
+        New temporary file will be created on success and all write operations will be performed
+        on this temporary file. On **close()** method invocation existing configuration file can
+        be moved to a backup file (see descrition of **overwrite** option below) and temporary file
+        is renamed in place of the original configuration file.
 
-If filename contains relative path, it is appended to a work directory name, provided either in `workdir` option or returned by `getcwd(3)`.
+    - **format** = STRING
 
-Work directory existence check is performed. If work directory does not exist, `undef` is returned and error flag is set!
+        Configuration file format. Currently unused.
 
-- **retain = INTEGER**
+    - **workdir** = STRING
 
-Quantity of configuration file backups to retain.
+        If filename contains absolute path, work directory is set to a **dirname(1)**
+        implicitly regardless of whether **workdir** option is set or not.
 
-Default is 0 - do not retain any.
+        If **workdir** is not set, work directory defaults to **getcwd(3)**.
 
-- **overwrite = BOOLEAN**
+        If filename contains relative path, it is appended to a work directory name,
+        provided either in **workdir** option or returned by **getcwd(3)**.
 
-Existing backup file having the same name will be either overwritten if the flag is set to true (overwrite = 1, backup contains the latest configuration file version) or stayed untouched (overwrite = 0, backup contains earliest configuration). E. g. if you choose to store single backup per day, you'll get either the latest configuration version before it being updated, or the configuration you've got at the beginning of the day.
+        Work directory existence check is performed. If work directory does not exist, \`undef\`
+        is returned and error flag is set!
 
-Default is 0.
+    - **retain** = INTEGER
 
-- **extension = STRING**
+        Quantity of configuration file backups to retain. Default is 0 - do not retain any.
 
-Configuration file backup extension format as described in POSIX `strftime(3)` function documentation. The new extension will replace original one, so the backup files should not be loaded even in case wildcards (e. g. '*.conf') are used to include configuration from a several files. Existing backup files will either stay untouched or overwritten depending on `overwrite` flag value.
+    - **overwrite** = BOOLEAN
 
-Default is '-%Y-%m-%d'.
+        Existing backup file will be either overwritten if the flag is set to true
+        (overwrite = 1) or stayed untouched (overwrite = 0). E. g. if you choose to
+        store single backup per day, you'll get either the latest configuration version
+        before it being updated, or the configuration you've got at the beginning of the
+        day.
 
-- **owner = STRING**
+        Default is 0.
 
-Configuration file owner name. If file owner can not be changed, `error` flag is set.
+    - **extension** = STRING
 
-Defaults to process EUID.
+        Configuration file backup extension format as described in POSIX strftime function
+        documentation. The new extension will replace original one, so the backup files
+        should not be loaded even in case wildcards (e. g. '**\*.conf**') are used to include
+        configuration from a several files. Existing backup files will either stay untouched
+        or overwritten depending on **overwrite** flag value.
 
-- **group = STRING**
+        Default is '-%Y-%m-%d'.
 
-Configuration file group name.
+    - **owner** = STRING
 
-If not provided, process EGID is used.
+        Configuration file owner name. If file owner can not be changed, error flag is set.
 
-- **permissions = OCTAL**
+        Defaults to process EUID.
 
-Configuration file permissions in numeric format. Read `chmod(1)` manual for details.
+    - **group** = STRING
 
-Default is '0600'.
+        Configuration file group name. If not provided, process EGID is used.
 
-### error()
-Takes no arguments. Returns `false` if **Config::Writer** object is defined and `error` flag is not set and `true` otherwise.
-### say(STRING)
-Is equivalent to `print()` method except that `$/` is added to the end of the STRING.
-### sayf(STRING, ARRAY)
-Is equivalent to `printf()` method except that `$/` is added to the end of the formatted STRING.
-### print(STRING)
-Prints STRING to temporary file as is.
-### printf(STRING, ARRAY)
-Prints formatted STRING to the temporary file. See `printf(3)` for more details.
-### close()
-Takes no arguments. When called:
+    - **permissions** = OCTAL
 
-* closes temporary configuration file;
-* tries to rename target configuration file to a backup file (if `retain` option is non-zero);
-* tries to remove surplus (oldest) backup files (if `retain` option is non-zero);
-* tries to rename temporary configuration file to a target name.
+        Configuration file permissions in numeric format. Read **chmod(1)** manual for
+        details.
 
-If any errors occurs, `error` flag is set.
-## AUTHORS
-* Volodymyr Pidgornyi
-## CHANGELOG
-* **v0.0.3** - Thu Sep 18, 2025 - PAUSE compatibility issues fixed.
-* **v0.0.2** - Tue Sep  2, 2025 - `sayf()` method added.
-* **v0.0.1** - Mon Aug 15, 2025 - initial release, since basic features seems to work as intended.
-## TODO
-* Implement helpers for a different configuration files formats.
+        Default is 0600.
+
+- **error()**
+
+    Takes no arguments. Returns \`false\` if **Config::Writer** object is
+    defined and \`error\` flag is not set and \`true\` otherwise.
+
+- **say(STRING)**
+
+    Is equivalent to **print()** method except that $/ is added to the end of the line.
+
+- **sayf(STRING, ARRAY)**
+
+    Is equivalent to **printf()** method except that $/ is added to the end of the format line.
+
+- **print(STRING)**
+
+    Prints STRING to temporary file as is.
+
+- **printf(STRING, ARRAY)**
+
+    Prints formatted string to the temporary file. See **printf(3)** for
+    more details.
+
+- **close()**
+
+    When called:
+
+    - closes temporary configuration file;
+    - tries to rename target configuration file to a backup file (if \`retain\`
+    option is non-zero);
+    - tries to remove surplus (oldest) backup files (if \`retain\` option is non-zero); 
+    - tries to rename temporary configuration file to a target name.
+
+    If any errors occurs, \`error\` flag is set.
+
+# **AUTHORS**
+
+- Volodymyr Pidgornyi, vp&lt;at>dtel-ix.net;
+
+# **CHANGELOG**
+
+- **v0.0.4**
+
+    \- Minor CPAN compatibility fixes;
+
+    \- README.md is generated from Netbox/Config.pm now.
+
+- **v0.0.3**
+
+    PAUSE compatibility issues fixed.
+
+- **v0.0.2**
+
+    **sayf()** metrod added.
+
+- **v0.0.1**
+
+    Initial release, since basic features seems to work as intended.
+
+# **TODO**
+
+- Implement helpers for a different configuration files formats.

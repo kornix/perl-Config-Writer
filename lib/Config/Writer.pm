@@ -83,7 +83,7 @@ BEGIN {
     $Data::Dumper::Sortkeys = 1;
 }
 
-our $VERSION = version->declare('v0.0.3')->stringify;
+our $VERSION = version->declare('v0.0.4')->stringify;
 our $ERROR = boolean::false;
 
 =pod
@@ -104,14 +104,13 @@ sub new :prototype($$$) ($class, $filename, $options = {}) {
 Create new B<Config::Writer> object as follows:
 
     my $fh = Config::Writer->new('file.conf', {
-	'format'        => 'BIRD',
         'workdir'       => '/path/to/workdir',
         'retain'        => 3,
-	'overwrite'     => 1,
+        'overwrite'     => 1,
         'extension'     => '-%+4Y-%m-%d',
-	'owner'         => 'bird',
-	'group'         => 'bird',
-	'permissions'   => 0640
+        'owner'         => 'bird',
+        'group'         => 'bird',
+        'permissions'   => 0640
     });
 
 Configuration file to be created or replaced name can contain either absolute or
@@ -431,6 +430,12 @@ Volodymyr Pidgornyi, vpE<lt>atE<gt>dtel-ix.net;
 =head1 B<CHANGELOG>
 
 =over 4
+
+=item B<v0.0.4>
+
+- Minor CPAN compatibility fixes;
+
+- README.md is generated from Netbox/Config.pm now.
 
 =item B<v0.0.3>
 

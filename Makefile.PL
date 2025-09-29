@@ -2,15 +2,13 @@ use strict;
 use warnings;
 use ExtUtils::MakeMaker;
 
-my $makemakerversion = $ExtUtils::MakeMaker::VERSION;
-$makemakerversion =~ s/_//g;
-
 WriteMakefile(
     NAME                => 'Config::Writer',
     AUTHOR              => 'Volodymyr Pidgornyi <vp@dtel-ix.net>',
     VERSION_FROM        => 'lib/Config/Writer.pm',
     # ABSTRACT_FROM       => 'lib/Config/Writer.pm',
     ABSTRACT            => 'module to write configuration files in an easy and safe way',
+    LICENSE             => 'apache_2_0',
     META_MERGE => {
         'meta-spec' => { version => 2 },
          resources => {
@@ -21,9 +19,6 @@ WriteMakefile(
              },
          },
     },
-    ($makemakerversion >= 6.3002
-      ? ('LICENSE'=> 'perl')
-      : ()),
     PL_FILES            => {},
     PREREQ_PM => {
         'Test::More' => 0,
